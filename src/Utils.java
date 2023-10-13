@@ -3,21 +3,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Utils {
-    public static Integer extremumInt(List<Integer> list, String extr) {
-        Decider<Integer> deciderInt = (first, second, str) -> {
-            if (Objects.equals(str, "min")) {
-                return first < second;
-            }
-            if (Objects.equals(str, "max")) {
-                return first > second;
-            }
-            else return false;
-        };
-        return findBest(list, deciderInt, extr);
-    }
 
-    public static Double extremumDouble(List<Double> list, String extr) {
-        Decider<Double> deciderDouble = (first, second, str) -> {
+    public static Integer extremumInt(List<Integer> list, String extr) {
+        Decider<Integer> deciderInt = new Decider<Integer>() {
+            @Override
+            public boolean isBetter(Integer first, Integer second, String str) {
                 if (Objects.equals(str, "min")) {
                     return first < second;
                 }
@@ -25,12 +15,31 @@ public class Utils {
                     return first > second;
                 }
                 else return false;
+            }
+        };
+        return findBest(list, deciderInt, extr);
+    }
+
+    public static Double extremumDouble(List<Double> list, String extr) {
+        Decider<Double> deciderDouble = new Decider<>() {
+            @Override
+            public boolean isBetter(Double first, Double second, String str) {
+                if (Objects.equals(str, "min")) {
+                    return first < second;
+                }
+                if (Objects.equals(str, "max")) {
+                    return first > second;
+                }
+                else return false;
+            }
         };
         return findBest(list, deciderDouble, extr);
     }
 
     public static String findStr(List<String> list, String extr) {
-        Decider<String> deciderStr = (first, second, str) -> {
+        Decider<String> deciderStr = new Decider<>() {
+            @Override
+            public boolean isBetter(String first, String second, String str) {
                 if (Objects.equals(str, "min")) {
                     return first.length() < second.length();
                 }
@@ -38,12 +47,16 @@ public class Utils {
                     return first.length() > second.length();
                 }
                 else return false;
+            }
         };
         return findBest(list, deciderStr, extr);
     }
 
+
     public static DayOfWeek findDayOfWeek(List<DayOfWeek> list, String extr) {
-        Decider<DayOfWeek> deciderDayOfWeek = (first, second, str) -> {
+        Decider<DayOfWeek> deciderDayOfWeek = new Decider<>() {
+            @Override
+            public boolean isBetter(DayOfWeek first, DayOfWeek second, String str) {
                 if (Objects.equals(str, "min")) {
                     return first.getValue() < second.getValue();
                 }
@@ -51,12 +64,15 @@ public class Utils {
                     return first.getValue() > second.getValue();
                 }
                 else return false;
+            }
         };
         return findBest(list, deciderDayOfWeek, extr);
     }
 
     public static Yokozuna findYokozuna(List<Yokozuna> list, String extr) {
-        Decider<Yokozuna> deciderYokozuna = (first, second, str) -> {
+        Decider<Yokozuna> deciderYokozuna = new Decider<>() {
+            @Override
+            public boolean isBetter(Yokozuna first, Yokozuna second, String str) {
                 if (Objects.equals(str, "min")) {
                     return first.getWeight() < second.getWeight();
                 }
@@ -64,6 +80,7 @@ public class Utils {
                     return first.getWeight() > second.getWeight();
                 }
                 else return false;
+            }
         };
         return findBest(list, deciderYokozuna, extr);
     }
