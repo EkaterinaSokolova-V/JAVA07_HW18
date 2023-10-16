@@ -5,91 +5,89 @@ import java.util.Objects;
 public class Utils {
 
     public static Integer extremumInt(List<Integer> list, String extr) {
-        Decider<Integer> deciderInt = new Decider<Integer>() {
+        Decider<Integer> decider = new Decider<>() {
             @Override
-            public boolean isBetter(Integer first, Integer second, String str) {
-                if (Objects.equals(str, "min")) {
-                    return first < second;
-                }
-                if (Objects.equals(str, "max")) {
-                    return first > second;
-                }
-                else return false;
+            public boolean isLess(Integer first, Integer second) {
+                return first < second;
+            }
+
+            public boolean isMore(Integer first, Integer second) {
+                return first > second;
             }
         };
-        return findBest(list, deciderInt, extr);
+        return findBest(list, decider, extr);
     }
 
     public static Double extremumDouble(List<Double> list, String extr) {
-        Decider<Double> deciderDouble = new Decider<>() {
+        Decider<Double> decider = new Decider<>() {
             @Override
-            public boolean isBetter(Double first, Double second, String str) {
-                if (Objects.equals(str, "min")) {
-                    return first < second;
-                }
-                if (Objects.equals(str, "max")) {
-                    return first > second;
-                }
-                else return false;
+            public boolean isLess(Double first, Double second) {
+                return first < second;
+            }
+
+            public boolean isMore(Double first, Double second) {
+                return first > second;
             }
         };
-        return findBest(list, deciderDouble, extr);
+        return findBest(list, decider, extr);
     }
 
     public static String findStr(List<String> list, String extr) {
-        Decider<String> deciderStr = new Decider<>() {
+        Decider<String> decider = new Decider<>() {
             @Override
-            public boolean isBetter(String first, String second, String str) {
-                if (Objects.equals(str, "min")) {
-                    return first.length() < second.length();
-                }
-                if (Objects.equals(str, "max")) {
-                    return first.length() > second.length();
-                }
-                else return false;
+            public boolean isLess(String first, String second) {
+                return first.length() < second.length();
+            }
+
+            @Override
+            public boolean isMore(String first, String second) {
+                return first.length() > second.length();
             }
         };
-        return findBest(list, deciderStr, extr);
+        return findBest(list, decider, extr);
     }
 
-
     public static DayOfWeek findDayOfWeek(List<DayOfWeek> list, String extr) {
-        Decider<DayOfWeek> deciderDayOfWeek = new Decider<>() {
+        Decider<DayOfWeek> decider = new Decider<>() {
             @Override
-            public boolean isBetter(DayOfWeek first, DayOfWeek second, String str) {
-                if (Objects.equals(str, "min")) {
-                    return first.getValue() < second.getValue();
-                }
-                if (Objects.equals(str, "max")) {
-                    return first.getValue() > second.getValue();
-                }
-                else return false;
+            public boolean isLess(DayOfWeek first, DayOfWeek second) {
+                return first.getValue() < second.getValue();
+            }
+
+            @Override
+            public boolean isMore(DayOfWeek first, DayOfWeek second) {
+                return first.getValue() > second.getValue();
             }
         };
-        return findBest(list, deciderDayOfWeek, extr);
+        return findBest(list, decider, extr);
     }
 
     public static Yokozuna findYokozuna(List<Yokozuna> list, String extr) {
-        Decider<Yokozuna> deciderYokozuna = new Decider<>() {
+        Decider<Yokozuna> decider = new Decider<>() {
             @Override
-            public boolean isBetter(Yokozuna first, Yokozuna second, String str) {
-                if (Objects.equals(str, "min")) {
-                    return first.getWeight() < second.getWeight();
-                }
-                if (Objects.equals(str, "max")) {
-                    return first.getWeight() > second.getWeight();
-                }
-                else return false;
+            public boolean isLess(Yokozuna first, Yokozuna second) {
+                return first.getWeight() < second.getWeight();
+            }
+
+            @Override
+            public boolean isMore(Yokozuna first, Yokozuna second) {
+                return first.getWeight() > second.getWeight();
             }
         };
-        return findBest(list, deciderYokozuna, extr);
+        return findBest(list, decider, extr);
     }
 
     public static <T> T findBest(List<T> list, Decider<T> decider, String str) {
         T accum = list.get(0);
         for (T e: list) {
-            if (decider.isBetter(e, accum, str)) {
-                accum = e;
+            if (Objects.equals(str, "min")) {
+                if (decider.isLess(e, accum)) {
+                    accum = e;
+                }
+            } else if (Objects.equals(str, "max")) {
+                if (decider.isMore(e, accum)) {
+                    accum = e;
+                }
             }
         }
         return accum;

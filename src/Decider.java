@@ -1,4 +1,5 @@
 public interface Decider<T> {
-    boolean isBetter(T first, T second, String str);
+    boolean isLess(T first, T second);
+    boolean isMore(T first, T second);
 }
 
