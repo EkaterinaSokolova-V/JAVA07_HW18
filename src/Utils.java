@@ -10,7 +10,7 @@ public class Utils {
             public boolean isLess(Integer first, Integer second) {
                 return first < second;
             }
-
+            @Override
             public boolean isMore(Integer first, Integer second) {
                 return first > second;
             }
@@ -24,7 +24,7 @@ public class Utils {
             public boolean isLess(Double first, Double second) {
                 return first < second;
             }
-
+            @Override
             public boolean isMore(Double first, Double second) {
                 return first > second;
             }
